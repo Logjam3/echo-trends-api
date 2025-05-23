@@ -1,21 +1,20 @@
 const express = require('express');
-const googleTrends = require('google-trends-api');
 const cors = require('cors');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.post('/trends', async (req, res) => {
+app.post('/trends', (req, res) => {
   const { keyword } = req.body;
-  try {
-    const result = await googleTrends.relatedQueries({ keyword });
-    const data = JSON.parse(result);
-    const queries = data.default.rankedList[0].rankedKeyword.map(k => k.query);
-    res.json({ keyword, trends: queries });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  res.json({
+    keyword,
+    trends: [
+      `${keyword} trend 1`,
+      `${keyword} trend 2`,
+      `${keyword} trend 3`
+    ]
+  });
 });
 
 const PORT = process.env.PORT || 3000;
